@@ -75,22 +75,26 @@ describe('Блок E2E тестов>', function () {
     });
 
     it('Тест добавления ингредиентов и отправки заказа', function () {
-
+      // добавляем ингредиенты, оформляем заказ
       cy.get(buns).contains('Добавить').click();
       cy.get(mains).contains('Добавить').click();
       cy.get(sauces).contains('Добавить').click();
       cy.get('[data-cy=order-total] button').click();
 
+      // проверка состава добавленных игредиентов в принятом заказе
       cy.wait('@postOrder')
         .its('request.body')
         .should('deep.equal', {
           ingredients: ['1', '2', '4', '1']
         });
 
+      // проверяем номер заказа
       cy.get(modalContent).contains('12345').should('exist');
 
+      // закрываем модальное окно и проверяем что модалки нет
       cy.get(closeModalButton).click();
       cy.get(modalContent).should('not.exist');
+      // проверяем, что конструктор очищен от булок и начинки
       cy.get(constructor).as('constructor');
       cy.get('@constructor').contains('Булка 1').should('not.exist');
       cy.get('@constructor').contains('Ингредиент 1').should('not.exist');
