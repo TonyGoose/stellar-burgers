@@ -35,7 +35,7 @@ export const fetchOrderBurger = createAsyncThunk<
   async (orderData, { extra: api }) => await api.orderBurgerApi(orderData)
 );
 
-type TOrderState = {
+export type TOrderState = {
   orderData: TOrder | null;
   userOrders: TOrder[];
   orderRequest: boolean;
@@ -51,7 +51,7 @@ const initialState: TOrderState = {
   requestStatus: RequestStatus.idle
 };
 
-export const orderSlice = createSlice({
+const orderSlice = createSlice({
   name: SliceName.order,
   initialState,
   reducers: {
