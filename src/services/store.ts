@@ -12,7 +12,7 @@ import {
 } from 'react-redux';
 import * as burgerApi from '@api';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   [ingredientsSlice.name]: ingredientsSlice.reducer,
   [feedsSlice.name]: feedsSlice.reducer,
   [burgerConstructorSlice.name]: burgerConstructorSlice.reducer,

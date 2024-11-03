@@ -1,23 +1,30 @@
-import { orderBurgerApi } from '@api';
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TIngredient, TConstructorIngredient, TOrder } from '@utils-types';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { TIngredient, TConstructorIngredient } from '@utils-types';
 
-type TBurgerConstructorState = {
+export type TBurgerConstructorState = {
   constructorItems: {
     bun: TIngredient | null;
     ingredients: TConstructorIngredient[];
   };
 };
+
 const initialState: TBurgerConstructorState = {
   constructorItems: {
     bun: null,
     ingredients: []
   }
 };
+
 export const burgerConstructorSlice = createSlice({
   name: 'burgerConstructor',
   initialState,
   reducers: {
+    setIngredients: (
+      state,
+      action: PayloadAction<TConstructorIngredient[]>
+    ) => {
+      state.constructorItems.ingredients = action.payload;
+    },
     addIngredient: {
       reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
         if (action.payload.type === 'bun') {
@@ -35,6 +42,7 @@ export const burgerConstructorSlice = createSlice({
     },
     moveUpIngredient: (state, action) => {
       const ingredient = state.constructorItems.ingredients[action.payload];
+
       state.constructorItems.ingredients.splice(action.payload, 1);
       state.constructorItems.ingredients.splice(
         action.payload - 1,
@@ -44,6 +52,7 @@ export const burgerConstructorSlice = createSlice({
     },
     moveDownIngredient: (state, action) => {
       const ingredient = state.constructorItems.ingredients[action.payload];
+
       state.constructorItems.ingredients.splice(action.payload, 1);
       state.constructorItems.ingredients.splice(
         action.payload + 1,
@@ -62,12 +71,14 @@ export const burgerConstructorSlice = createSlice({
     selectConstructorItems: (sliceState) => sliceState.constructorItems
   }
 });
+
 export const {
   addIngredient,
   deleteIngredient,
   moveUpIngredient,
   moveDownIngredient,
-  clearConstructorItems
+  clearConstructorItems,
+  setIngredients
 } = burgerConstructorSlice.actions;
 export const { selectConstructorItems } = burgerConstructorSlice.selectors;
 
